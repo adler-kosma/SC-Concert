@@ -5,6 +5,7 @@ s.meter;s.plotTree;
 ~sawAmp = 0.02;
 ~klankAmp = 0.18;
 )
+
 (
 ~gatorsettings = (inBusA1:t.a1Bus, inBusA2: t.a2Bus, inBusB:t.bBus, outBus1:t.outBus1, outBus2: t.outBus2, revOut: t.revBus, lag:10, clampT:0.1, relaxTime:1, gate:1, thresh:0.1, revAmp:0.5);
 t.gator(~gatorsettings);
