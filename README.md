@@ -15,7 +15,7 @@ Boot the server by pressing cmd + B.
 
 Many of the concert scripts depend on the class Konsert. This needs to be cloned separately and saved in
 ```
-/home/someusername/.local/share/SuperCollider/Extensions
+/Users/someusername/Library/Application Support/SuperCollider/Extensions/
 ```
 
 Compile the class library and you are good to go.
