@@ -1,7 +1,7 @@
 
 t = KonsertStereo();
-s.options.device = "UltraLite-mk4"; //FIRST STEP
 s.meter;s.plotTree;
+
 (
 ~gatorsettings = (inBusA:t.aBus, inBusB:t.bBus, inBusV: t.vBus, outBus:t.panBusOutAz, revOut: t.revBus, lag:10, clampT:0.1, relT:1, gate:1, thresh:0.5);
 t.gator(~gatorsettings);
