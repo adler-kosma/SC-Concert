@@ -33,7 +33,6 @@ Pbindef(\midiMoog,
 	], inf)
 );
 
-Pbindef(\midiMoog, \dur, Pseq([Pseq([1], 4), Pseq([0.2], 10)], inf));
 
 Pbindef(\midiMoog1,
 	\type, \midi,
@@ -58,7 +57,7 @@ Pbindef(\klank,
 	\amp1, 0.4,
 	\atk, 0.01,
 	\rel, 0.1,
-	\outBus, t.a1Bus,
+	\outBus, t.aBus,
 	\group, t.synthGroup,
 );
 
@@ -82,7 +81,7 @@ Pbindef(\klank1,
 Pbindef(\panning,
 	\instrument, \discreteOut,
 	\group, t.panGroup,
-	\inBus, t.panBusD,
+	\inBus, t.panBusOutD,
 	\freq, Pseq([Pseq([2,3], 4), Prand([4,5], 1)], inf)-1, //channel
 	\dur, Pseq([
 		Pseq([1], 1),
@@ -211,7 +210,7 @@ Pbindef(\brownPan1,
 		1, Pseq([2/3], 6),
 	], inf),
 	\amp, Pseq([0.032, Pseq([0.015], 6)], inf)*2,
-	\outBus, t.a1Bus
+	\outBus, t.aBus
 );
 
 Pbindef(\brownPan0,

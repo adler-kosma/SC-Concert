@@ -1,31 +1,40 @@
 
 t = KonsertStereo();
 s.meter;s.plotTree;
+//o = Server.default.options;
+//o.outDevice = "Built-in Output";
+
+~bluntNoise = Buffer.readChannel(s,"/Users/adele21/Music/BluntNoise.wav", channels:[0]);
+~bluntNoise.play;
 
 (
-~gatorsettings = (inBusA:t.aBus, inBusB:t.bBus, inBusV: t.vBus, outBus:t.panBusOutAz, revOut: t.revBus, lag:10, clampT:0.1, relT:1, gate:1, thresh:0.5);
+~gatorsettings = (inBusA:t.aBus, inBusB:t.bBus, outBus:t.outBus, revOut: t.revBus, lag:10, clampT:0.1, relT:1, gate:1, thresh:0.4);
 t.gator(~gatorsettings);
 )
-~korg.set(\outBus, t.bBus);
+~moog.set(\outBus, t.outBus);
+~moog.free;
 (
-~moog = Synth(\moog, [\inBus, 1, \outBus, t.aBus, \amp, 1], t.synthGroup);
-~korg = Synth(\D1200, [\inBus, 2, \outBus, t.bBus], t.synthGroup);
+~guitar = Synth(\moog, [\inBus, 2, \outBus, 0, \amp, 1], t.synthGroup);
+~moog = Synth(\moog, [\inBus, 1, \outBus, t.outBus, \amp, 1], t.synthGroup);
 ~mic = Synth(\mic, [\inBus, 0, \outBus, t.outBus], t.synthGroup);
+~playBuf = Synth(\playBackBuf, [\buf, ~bluntNoise, \outBus, t.aBus], t.synthGroup);
+~playBuf.free;
 
-~gatorsettings = (inBusA:t.aBus, inBusB:t.bBus, inBusV: t.vBus, outBus:t.panBusOutAz, revOut: t.revBus, lag:10, clampT:0.01, relT:0.5, gate:1);
+~gatorsettings = (inBusA:t.aBus, inBusB:t.bBus, outBus:0, revOut: t.revBus, lag:10, clampT:0.01, relT:0.5, gate:1);
 t.gator(~gatorsettings);
-~passGator = Synth(\noGator, [\inBus, t.outBus, \inBusV, t.vocBus, \outBus, t.panBusD, \outBusV, t.vocBusOut, \revOut, t.revBus], t.fxGroup, 'addToHead');
-~reverb = Synth(\reverb, [\inBus, t.revBus, \outBus, t.panBusD], t.fxGroup, 'addToTail');
 
-~panAz = Synth(\panAzStereo, [\inBus,  t.panBusOutAz, \outBus, 2, \speed, 0.1, \level, 1, \dir, 1], t.panGroup, 'addToTail');
-~out = Synth(\outSynth, [\inBus, t.panBus, \inBusV, t.vocBusOut, \outBus, 2], t.panGroup);
+~passGator = Synth(\noGator, [\inBus, t.outBus, \outBus, t.panBusOut, \revOut, t.revBus], t.fxGroup, 'addToHead');
+~reverb = Synth(\reverb, [\inBus, t.revBus, \outBus, t.panBusOut], t.fxGroup, 'addToTail');
+
+~panAz = Synth(\panAzStereo, [\inBus,  t.panBusOutAz, \outBus, 0, \speed, 0.1, \level, 1, \dir, 1], t.panGroup, 'addToTail');
+~out = Synth(\stereoOut, [\inBus, t.panBusOut, \outBus, 0], t.panGroup);
 )
 
 //////////////////////TUNING
 ///////////////////////
 ///////////////////////
 (
-~sine = {Out.ar(2, SinOsc.ar(440)*0.04)}.play;
+~sine = {Out.ar(0, SinOsc.ar(440)*0.04)}.play;
 Pbindef(\midiTuning,
 	\type, \midi,
 	\midicmd, \noteOn,
@@ -34,13 +43,13 @@ Pbindef(\midiTuning,
 	\midinote, 69,
 	\dur, Pseq([3], inf),
 ).play;
-~moog0 = Synth(\moog, [\inBus, 1, \outBus, 3, \amp, 1]);
+~moog0 = Synth(\moog, [\inBus, 0, \outBus, 2, \amp, 1]);
 )
+(
 Pbindef(\midiTuning).stop;
 ~sine.free;
 ~moog0.free;
-~moog0.set(\inBus, 1, \outBus, 1, \amp, 1);
-
+)
 /////////////////////// STOP
 ///////////////////////
 ///////////////////////
