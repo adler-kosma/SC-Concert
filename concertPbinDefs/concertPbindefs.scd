@@ -18,12 +18,7 @@ Pbindef(\midiMoog,
 			Pseq([1,4,5,3,6,3,2,4], 1),
 			Pseq([1,0,7,5,6,3,2,4], 9)], inf)
 	], 1),
-	\root, Pseq([
-		Pseq([-2], 30),
-		Pseq([-1], 30),
-		Pseq([1], 30),
-		Pseq([2], inf),
-	], 1),
+	\root, 2,
 	\dur, Pseq([
 		Pseq([
 			Pseq([1], 1),

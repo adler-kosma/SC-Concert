@@ -37,23 +37,52 @@ Pbindef(\midiMoog,
 // Unusually lost bits //// MOOG 16 - CLICK 'VALUE' FOR APPERGIO
 /////////////////////////////
 
+
+
+
+~playBufBlunt = Synth(\playBackBufMono, [\buf, ~bluntNoiseBuf.bufnum, \outBus, t.bBus], t.synthGroup);
+~playBufBlunt.set(\amp, 2);
+~playBufBlunt.free;
+
 ~mic.set(\outBus, t.aBus);
 ~moog.set(\outBus, t.bBus);
-~playBuf.play;
 Pbindef(\midiMoog, \degree, 0, \dur, Pseq([1], inf), \root, -5, \dur, 1).play;
 
 //TO STOP
 Pbindef(\midiMoog).stop;
+
+/////////////////////////////
+//Give/Take
+/////////////////////////////
+
+
+/////////////////////////////
+//To Pieces
+/////////////////////////////
+~playBufToPieces = Synth(\playBackBuf, [\buf, ~toPiecesChoir.bufnum, \outBus, 0], t.synthGroup);
+~playBufToPieces.free;
 
 
 /////////////////////////////
 // CLOSER TO TRUST - MOOG 16
 /////////////////////////////
 
+
+SynthDef(\klankX, {
+	arg outBus, i_freq=200, atk=0.1, rel=0.6, amp1=0.5, val=466.16;
+	var klank, n, harm, amp, ring, env;
+	env = EnvGen.ar(Env.perc(atk, rel), doneAction:2);
+	harm = \harm.ir(Array.series(4, 1, 1));
+	amp = \amp.ir(Array.fill(4, 0.05));
+	ring = \ring.ir(Array.fill(4, 1));
+	klank = Klank.ar(`[harm, amp, ring], {SinOsc.ar(val)*0.03}.dup, i_freq) * env * amp1;
+	AnalogVintageDistortion.ar
+	Out.ar(outBus, klank);
+}).add;
+
 ~klankamp = 0.5;
 Pbindef(\klank, \outBus, t.aBus, \amp1, ~klankamp * 0.5, \dur, Pseq([1/3], inf)).play;
 Pbindef(\klank, \amp1, ~klankamp * 0.7);
-
 Pbindef(\klank, \dur, Pseq([1/6, 1/3, 1/3], inf)).play;
 
 
