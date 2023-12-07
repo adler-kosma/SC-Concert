@@ -3,27 +3,38 @@ t = KonsertStereo();
 s.meter;s.plotTree;
 //o = Server.default.options;
 //o.inDevice = "ULN-8";
+//o.outDevice = "Headphones";
+s.recChannels = 2;
 
-Quarks.install("https://github.com/madskjeldgaard/plugins.quark");
-
+/////////////////////////////
+// checklist:
+// Buzz on Moog!
+// Mic level MOTU: 20
+/////////////////////////////
+s.recChannels = 2;
 (
-~gatorsettings = (inBusA:t.aBus, inBusB:t.bBus, outBus:0, revOut: 0, revAmp: 0.5, lag:5, clampT:0.1, relT:2, thresh:0.1);
+~gatorsettings = (inBusA:t.aBus, inBusB:t.bBus, lag:5, clampT:0.6, relT:2, thresh:0.2);
 t.gator(~gatorsettings);
 )
 ~mic.free;
+~kontaktMic.free;
+~moog.free;
+~moog.set(\outBus, t.outBus);
 (
-~moog = Synth(\moog, [\inBus, 1, \outBus, t.outBus, \amp, 1], t.synthGroup);
-~mic = Synth(\mic, [\inBus, 2, \outBus, t.aBus], t.synthGroup);
-
-~gatorsettings = (inBusA:t.aBus, inBusB:t.bBus, outBus:0, revOut: t.revBus, lag:10, clampT:0.01, relT:0.5, gate:1);
+~gatorsettings = (inBusA:t.aBus, inBusB:t.bBus, outBus:t.outBus, lag:5, clampT:0.6, relT:2, thresh:0.2);
 t.gator(~gatorsettings);
+
+~moog = Synth(\moog, [\inBus, 2, \outBus, t.outBus], t.synthGroup);
+~mic = Synth(\mic, [\inBus, 0, \outBus, 2, \outBusRev, t.revBusVox], t.synthGroup);
 
 ~passGator = Synth(\noGator, [\inBus, t.outBus, \outBus, t.panBusOut, \revOut, t.revBus], t.fxGroup, 'addToHead');
 ~reverb = Synth(\reverb, [\inBus, t.revBus, \outBus, 0], t.fxGroup,'addToTail');
+~reverbVox = Synth(\reverbVox, [\inBusVox, t.revBusVox, \outBusVox, 2], t.fxGroup,'addToTail');
 
-~panAz = Synth(\panAzStereo, [\inBus,  t.panBusOutAz, \outBus, 0, \speed, 0.1, \level, 1, \dir, 1], t.panGroup, 'addToTail');
 ~out = Synth(\stereoOut, [\inBus, t.panBusOut, \outBus, 0], t.panGroup);
 )
+
+~reverbVox.free;
 
 //////////////////////TUNING
 ///////////////////////
@@ -38,7 +49,7 @@ Pbindef(\midiTuning,
 	\midinote, 69,
 	\dur, Pseq([3], inf),
 ).play;
-~moog0 = Synth(\moog, [\inBus, 0, \outBus, 2, \amp, 1]);
+~moog0 = Synth(\moog, [\inBus, 2 , \outBus, 0, \amp, 1]);
 )
 (
 Pbindef(\midiTuning).stop;
@@ -54,6 +65,8 @@ Pbindef(\midiTuning).stop;
 ~moog.free;
 ~mic.free;
 ~grainSynth.free;
+~out.free;
+~reverb.free;
 Pbindef(\midiMoog).stop;
 Pbindef(\midiMoog1).stop;
 Pbindef(\midiMoog2).stop;
