@@ -25,9 +25,6 @@ t.gator(~gatorsettings);
 t.gator(~gatorsettings);
 
 ~moog = Synth(\moog, [\inBus, 2, \outBus, t.outBus], t.synthGroup);
-//~lyraL = Synth(\moog, [\inBus, 3, \outBus, 0], t.synthGroup);
-//~lyraR = Synth(\moog, [\inBus, 4, \outBus, 1], t.synthGroup);
-
 ~mic = Synth(\mic, [\inBus, 0, \outBus, 4, \outBusRev, t.revBusVox], t.synthGroup);
 
 ~passGator = Synth(\noGator, [\inBus, t.outBus, \outBus, t.panBusOut, \revOut, t.revBus], t.fxGroup, 'addToHead');
