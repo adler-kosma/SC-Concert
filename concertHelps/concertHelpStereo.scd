@@ -25,22 +25,22 @@ t.gator(~gatorsettings);
 t.gator(~gatorsettings);
 
 ~moog = Synth(\moog, [\inBus, 2, \outBus, t.outBus], t.synthGroup);
-~mic = Synth(\mic, [\inBus, 0, \outBus, 2, \outBusRev, t.revBusVox], t.synthGroup);
+~mic = Synth(\mic, [\inBus, 0, \outBus, 4, \outBusRev, t.revBusVox], t.synthGroup);
 
 ~passGator = Synth(\noGator, [\inBus, t.outBus, \outBus, t.panBusOut, \revOut, t.revBus], t.fxGroup, 'addToHead');
-~reverb = Synth(\reverb, [\inBus, t.revBus, \outBus, 0], t.fxGroup,'addToTail');
-~reverbVox = Synth(\reverbVox, [\inBusVox, t.revBusVox, \outBusVox, 2], t.fxGroup,'addToTail');
+~reverb = Synth(\reverb, [\inBus, t.revBus, \outBus, 2, \level, 0.1], t.fxGroup,'addToTail');
+~reverbVox = Synth(\reverbVox, [\inBusVox, t.revBusVox, \outBusVox, 4, \level, 0.1], t.fxGroup,'addToTail');
 
-~out = Synth(\stereoOut, [\inBus, t.panBusOut, \outBus, 0], t.panGroup);
+~out = Synth(\stereoOut, [\inBus, t.panBusOut, \outBus, 2], t.panGroup);
 )
 
 ~reverbVox.free;
-
+~reverbVox.set(\level, 0.1);
 //////////////////////TUNING
 ///////////////////////
 ///////////////////////
 (
-~sine = {Out.ar(0, SinOsc.ar(440)*0.04)}.play;
+~sine = {Out.ar(2, SinOsc.ar(440)*0.06)}.play;
 Pbindef(\midiTuning,
 	\type, \midi,
 	\midicmd, \noteOn,
@@ -49,7 +49,7 @@ Pbindef(\midiTuning,
 	\midinote, 69,
 	\dur, Pseq([3], inf),
 ).play;
-~moog0 = Synth(\moog, [\inBus, 2 , \outBus, 0, \amp, 1]);
+~moog0 = Synth(\moog, [\inBus, 2 , \outBus, 2, \amp, 1]);
 )
 (
 Pbindef(\midiTuning).stop;
