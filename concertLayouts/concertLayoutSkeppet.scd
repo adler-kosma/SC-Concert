@@ -2,7 +2,7 @@
 /////////////////////////////
 // INTRO - Moog14
 /////////////////////////////
-Pbindef(\midiMoog, \root, 2).play; ~reverb.set(\level, 0.1); //Filter Release 0% glitch
+Pbindef(\midiMoog, \root, 2).play; ~reverb.set(\level, 0.5); //Filter Release 0% glitch
 ~reverb.set(\level, 0.6);
 
 Pbindef(\midiMoog).stop;
@@ -18,7 +18,7 @@ Pbindef(\midiMoog,
 	], 4),
 	\dur, Pseq([0.5], inf),
 ).play;
-~reverb.set(\level, 0.05);
+~reverb.set(\level, 0.1);
 )
 
 
@@ -42,7 +42,7 @@ Pbindef(\midiMoog,
 
 
 (
-~reverb.set(\level, 0.05);
+~reverb.set(\level, 0.1);
 ~reverbVox.set(\level, 0.1);
 ~playBufBlunt.free;
 ~mic.set(\outBus, 4);
@@ -50,7 +50,7 @@ Pbindef(\midiMoog,
 
 (
 ~moog.set(\outBus, t.aBus);
-~playBufDrums = Synth(\playBackBufMono, [\buf, ~lostBitsDrumsBuf.bufnum, \outBus, t.bBus, \amp, 0.5], t.synthGroup);
+~playBufDrums = Synth(\playBackBufMono, [\buf, ~lostBitsDrumsBuf.bufnum, \outBus, t.bBus, \amp, 0.6], t.synthGroup);
 Pbindef(\midiMoog, \degree,
     Pseq([
         Pseq([0, 4, 7, 4], 3),
@@ -66,7 +66,7 @@ Pbindef(\midiMoog, \degree,
 t.gator(~gatorsettings);
 )
 
-~playBufDrums.set(\amp, 0.6);
+~playBufDrums.set(\amp, 0.7);
 
 //TO STOP
 (
@@ -77,23 +77,23 @@ Pbindef(\midiMoog).stop;
 /////////////////////////////
 //Give/Take
 /////////////////////////////
-~reverbVox.set(\level, 0.0);
+~reverbVox.set(\level, 0.1);
 
 
 /////////////////////////////
 //To Pieces
 /////////////////////////////
 (
-~playBufToPieces = Synth(\playBackBuf, [\buf, ~toPiecesChoirBuf.bufnum, \outBus, 2, \amp, 0.2], t.synthGroup);
+~playBufToPieces = Synth(\playBackBuf, [\buf, ~toPiecesChoirBuf.bufnum, \rate, 1, \outBus, 2, \amp, 0.1], t.synthGroup);
 ~playBufToPiecesRev = Synth(\playBackBufMono, [\buf, ~toPiecesChoirBufRev.bufnum, \outBus, t.revBus, \amp, 0.1, \loop, 0], t.synthGroup);
-~reverbVox.set(\level, 0.05);
+~reverbVox.set(\level, 0.1);
 )
 
 (
 ~playBufToPieces.free;
 ~playBufToPiecesRev.free;
 )
-~playBufToPieces.set(\amp, 0.2);
+~playBufToPieces.set(\amp, 0.1);
 ~playBufToPiecesRev.set(\amp, 0.1);
 
 /////////////////////////////
@@ -144,15 +144,14 @@ Pbindef(\midiMoog,
 Pbindef(\klank).stop;
 ~reverb.set(\level, 0.1);
 Pbindef(\midiMoog).stop;
-)
-
-(
+~playBufBlunt.free;
 ~reverb.set(\level, 0.1);
 ~moog.set(\outBus, t.outBus);
-Pbindef(\midiMoog, \dur, 0.5, \degree, Pseq([0,6,7,1,4,5,3,2,8], inf)).play;
+Pbindef(\midiMoog, \dur, 0.5, \root, 2, \degree, Pseq([0,6,7,1,4,5,3,2,8], inf)).play;
 )
 
 (
 Pbindef(\midiMoog).stop;
-~playBufBlunt.free;
 )
+
+
